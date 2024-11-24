@@ -46,6 +46,22 @@ def user_setup():
 
 
 def run_app(name: str):
+    """
+    Executes a specified application by its name.
+
+    This function changes the current working directory to the 'var'
+    directory located under the base directory 'NIX VHD'. It attempts
+    to read the application's executable path from a `.dat` file named
+    after the application (in lowercase). Depending on the operating system,
+    it runs the application using the appropriate Python interpreter.
+
+    Parameters:
+    name (str): The name of the application to run.
+
+    Logs an error message if the application `.dat` file is not found
+
+    :param name:
+    """
     os.chdir(f"{find_base_dir("NIX VHD")}/var")
     try:
         with open(f"{name.lower()}.dat", 'r') as f:
@@ -91,9 +107,24 @@ def login():
 
 def generate_app(name: str, url: str, dependencies: str = None):
     """
-    This function helps you generate apps that are compatible with the kernel
+    Generates a new application directory structure, downloads the executable
+    script, and installs any specified dependencies.
 
-    Separate dependencies by ' '
+    This function creates a new directory for the application under the
+    current working directory. Inside this directory, it creates subdirectories
+    following a specific structure: `Contents` and `src`. The executable script
+    is downloaded from the provided URL into the `src` directory. If dependencies
+    are specified, it installs them using the appropriate package manager commands
+    for `pip`.
+
+    Parameters:
+    name (str): The name of the application.
+    url (str): The URL from where the application's executable script is downloaded.
+    dependencies (str, optional): A space-separated string of dependencies to be installed.
+                                  Defaults to None.
+
+    The function also writes the path to the executable script into a `.dat` file
+    under the `var` directory located in the base directory 'NIX VHD'.
     :param name:
     :param url:
     :param dependencies:
@@ -157,10 +188,11 @@ def setup():
     print("Successfully generated the directories!")
     print("Downloading files...")
 
-    generate_app("Terminal", "https://raw.githubusercontent.com/G1aD05/terminal/refs/heads/main/src/main.py", "ping3 tzlocal psutil pyfiglet colorama pillow")
+    generate_app("Terminal", "https://raw.githubusercontent.com/G1aD05/terminal/refs/heads/main/src/main.py",
+                 "ping3 tzlocal psutil pyfiglet colorama pillow")
     os.chdir(find_base_dir("NIX VHD"))
     print("Downloaded files!\nThe system will now prompt you to create a user")
-    print('\n'*20)
+    print('\n' * 20)
     user_setup()
     print("The system will now restart...")
     os.chdir(find_base_dir("NIX VHD"))
@@ -187,5 +219,5 @@ if __name__ == "__main__":
         if user:
             sys_username = user
             log(f"User {sys_username} has logged in successfully")
-            print('\n'*20)
+            print('\n' * 20)
             exec(open("main.py").read())

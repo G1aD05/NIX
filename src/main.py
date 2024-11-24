@@ -1,4 +1,5 @@
-from kernel import *
+from kernel import log, username
+import kernel
 import os
 import re
 import platform
@@ -64,6 +65,8 @@ class Main:
                 exit()
             case "cd":
                 os.chdir(self._ARGS[1])
+            case "gen-app":
+                kernel.generate_app(self._ARGS[1], self._ARGS[2], None if self._ARGS[3] is None else self._ARGS[3])
             case _:
                 print("ERR: COMMAND NOT FOUND")
                 log("Error: Command not found")
