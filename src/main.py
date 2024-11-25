@@ -1,4 +1,4 @@
-from kernel import log, username
+from kernel import log, username, run_app
 import kernel
 import os
 import re
@@ -52,8 +52,11 @@ class Main:
         self._check_path()
         self._COMMAND = input(f"NIX::{os.getcwd()} : ")
         self._ARGS.clear()
-        self._CURRENT_PATH = os.getcwd().split("\\" if platform.system() == "Windows" else "/")[1:]
-        print(self._CURRENT_PATH)
+        self._CURRENT_PATH = os.getcwd()
+        # with os.scandir(self._CURRENT_PATH) as entries:
+        #     for entry in entries:
+        #         if not entry.name == "__pycache__":
+        #             print(entry.name)
         for match in re.findall(r'"(.*?)"|(\S+)', self._COMMAND):
             if match[0]:
                 self._ARGS.append(match[0])
@@ -68,8 +71,9 @@ class Main:
             case "gen-app":
                 kernel.generate_app(self._ARGS[1], self._ARGS[2], None if self._ARGS[3] is None else self._ARGS[3])
             case _:
-                print("ERR: COMMAND NOT FOUND")
-                log("Error: Command not found")
+                if run_app(self._ARGS[0]) is False:
+                    print("ERR: COMMAND/EXECUTABLE NOT FOUND")
+                    log("Error: Command/Executable not found")
 
         self.sys_interactor()
 
