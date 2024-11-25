@@ -1,4 +1,5 @@
 # NIX
 
 Not fully supported for windows\
-Also this isn't finished, that's why there is only one file, also the kernel is free to use.
+Also this isn't finished\
+The kernel is free to use
