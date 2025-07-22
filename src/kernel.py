@@ -73,6 +73,7 @@ def run_app(name: str):
 
     except OSError:
         log(f"Path::NIX VHD/var/{name.lower()}.dat not found; failed to run app")
+        return False
 
 
 def login():
